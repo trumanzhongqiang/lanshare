@@ -1,0 +1,9 @@
+# runtime artifacts (created at %LOCALAPPDATA%\LanShare, never in repo)
+shares.json
+pending_urls.txt
+*.log
+*.tmp
+
+# python
+__pycache__/
+*.pyc
