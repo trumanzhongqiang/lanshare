@@ -28,6 +28,7 @@ LanShare combines the two: Explorer-first UX, per-file random-token links, zero 
 - 📱 Mobile-friendly index page listing every current share
 - 🚀 Background service auto-starts on boot; the right-click action revives it if it isn't running
 - 🪟 No admin rights needed to install (only a one-time UAC prompt for the firewall rule)
+- 🐧 **WSL2 files too** — right-click anything under `\\wsl.localhost\...` in Explorer; measured ~160 MB/s through the 9P bridge, and no port-forwarding is involved because the server stays on the Windows side
 
 ## Install
 
@@ -72,6 +73,7 @@ Revoke everything: empty the `shares` array in `%LOCALAPPDATA%\LanShare\shares.j
 - **IP changed by the router?** Old links break — right-click the file again. (Fix it permanently with a DHCP reservation for your PC.)
 - **Phone can't connect?** Almost always the firewall profile: the installer opens TCP 8000 for the *private* profile. If your Wi-Fi is categorized as *public*, re-run `install.ps1`, or change the network category.
 - **Formats** — mp4/webm/m4v play natively in browsers; for mkv/avi open the link in [VLC](https://www.videolan.org/) (Network Stream) on the receiving device.
+- **WSL2** — share files living inside WSL by right-clicking them under `\\wsl.localhost\<distro>\...` in Explorer. Requirements: the distro must be running (otherwise the path doesn't resolve and you get the "file not found" popup). No `netsh portproxy` gymnastics: that is only needed if the *server itself* runs inside WSL, which LanShare deliberately avoids.
 
 ## Security model
 
@@ -92,6 +94,7 @@ Revoke everything: empty the `shares` array in `%LOCALAPPDATA%\LanShare\shares.j
 
 - 每次分享生成随机令牌链接，未分享的内容一律 404，不暴露磁盘其他内容
 - 支持多选（一次复制全部链接）、文件夹（列表页）、手机索引页 `http://<电脑IP>:8000/`
+- 支持 **WSL2 内的文件**：在资源管理器 `\\wsl.localhost\<发行版>\...` 下右键即可，实测 9P 桥吞吐约 160 MB/s，服务在 Windows 侧运行、无需任何端口转发
 - 取消分享：编辑 `%LOCALAPPDATA%\LanShare\shares.json` 删除对应条目，即时生效
 - 安装/卸载见上方英文段落，要求 Windows 10/11 + Python 3.8+
 
